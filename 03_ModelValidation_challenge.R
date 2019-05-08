@@ -38,3 +38,6 @@ logistic.model <- readRDS("02_SampleLogisticModel.RDS")
 
 
 # 4) Extra: Create a second model and construct a two-way lift chart.
+
+
+# YOUR CODE HERE ####
