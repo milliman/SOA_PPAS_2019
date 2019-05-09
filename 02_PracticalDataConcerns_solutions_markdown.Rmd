@@ -42,9 +42,9 @@ a) Find the number of missing values in each field.
 sapply(heartattack, function(x) sum(is.na(x)))
 ```
 
-b) Does the missingness in any field correlate to the response variable or to other fields' values? This may help determine how to deal with the missing values.
+b) Does the missingness in any field correlate to the response variable or to other fields' values? Consider using the table() function for cross-tabulating two categorical variables. 
 
-**By looking at bivariate, or "two-way" tables, we can assess the relationship between whether a "Sex" observation is missing and each of the categorical fields in the dataset. Comparing mean values in a continuous field, split over whether the "Sex" value is missing, shows us whether there is some correlation there. **
+**This may help determine how to deal with the missing values. By looking at bivariate, or "two-way" tables, we can assess the relationship between whether a "Sex" observation is missing and each of the categorical fields in the dataset. Comparing mean values in a continuous field, split over whether the "Sex" value is missing, shows us whether there is some correlation there. **
 
 **It looks like missingness in the "Sex" field is uncorrelated to other key fields in the dataset, which suggests that a simple imputation is probably adequate.**
 

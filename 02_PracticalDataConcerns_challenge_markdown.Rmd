@@ -42,7 +42,7 @@ a) Find the number of missing values in each field.
 
 ```
 
-b) Does the missingness in any field correlate to the response variable or to other fields' values? This may help determine how to deal with the missing values.
+b) Does the missingness in any field correlate to the response variable or to other fields' values? Consider using the table() function for cross-tabulating two categorical variables.
 
 ```{r 1b_NACorrelation}
 

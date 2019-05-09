@@ -443,176 +443,31 @@ heartattack &lt;- readRDS(&quot;heartdiseasedataset_modified.RDS&quot;)</code></
 <ol style="list-style-type: lower-alpha">
 <li>Find the number of missing values in each field.</li>
 </ol>
-<p><strong>Only “Sex” shows any missing values.</strong></p>
-<pre class="r"><code>sapply(heartattack, function(x) sum(is.na(x)))</code></pre>
-<pre><code>## LocationAbbr         Year          Sex         Race          Age 
-##            0            0        66780            0            0 
-##      outcome  GeoLocation 
-##            0            0</code></pre>
+<pre class="r"><code># YOUR CODE HERE ####</code></pre>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>Does the missingness in any field correlate to the response variable or to other fields’ values? Consider using the table() function for cross-tabulating two categorical variables.</li>
 </ol>
-<p><strong>This may help determine how to deal with the missing values. By looking at bivariate, or “two-way” tables, we can assess the relationship between whether a “Sex” observation is missing and each of the categorical fields in the dataset. Comparing mean values in a continuous field, split over whether the “Sex” value is missing, shows us whether there is some correlation there. </strong></p>
-<p><strong>It looks like missingness in the “Sex” field is uncorrelated to other key fields in the dataset, which suggests that a simple imputation is probably adequate.</strong></p>
-<pre class="r"><code>heartattack %&gt;% 
-  group_by(NAsex = is.na(Sex)) %&gt;%
-  summarize(prevalence = mean(outcome))</code></pre>
-<pre><code>## # A tibble: 2 x 2
-##   NAsex prevalence
-##   &lt;lgl&gt;      &lt;dbl&gt;
-## 1 FALSE     0.0313
-## 2 TRUE      0.0314</code></pre>
-<pre class="r"><code>heartattack %&gt;% 
-  mutate(NAsex = ifelse(is.na(Sex), NA, &quot;Not NA&quot;)) %&gt;%
-  select(NAsex, Race) %&gt;%
-  table(., useNA = &quot;ifany&quot;) %&gt;%
-  chisq.test()</code></pre>
-<pre><code>## 
-##  Pearson&#39;s Chi-squared test
-## 
-## data:  .
-## X-squared = 5.7411, df = 4, p-value = 0.2193</code></pre>
-<pre class="r"><code>heartattack %&gt;% 
-  mutate(NAsex = ifelse(is.na(Sex), NA, &quot;Not NA&quot;)) %&gt;%
-  select(NAsex, Age) %&gt;%
-  table(., useNA = &quot;ifany&quot;) %&gt;%
-  chisq.test()</code></pre>
-<pre><code>## 
-##  Pearson&#39;s Chi-squared test
-## 
-## data:  .
-## X-squared = 2.3459, df = 3, p-value = 0.5038</code></pre>
-<pre class="r"><code>heartattack %&gt;% 
-  mutate(NAsex = ifelse(is.na(Sex), NA, &quot;Not NA&quot;)) %&gt;%
-  select(NAsex, LocationAbbr) %&gt;%
-  table(., useNA = &quot;ifany&quot;) %&gt;%
-  chisq.test()</code></pre>
-<pre><code>## 
-##  Pearson&#39;s Chi-squared test
-## 
-## data:  .
-## X-squared = 52.682, df = 50, p-value = 0.3707</code></pre>
-<pre class="r"><code>heartattack %&gt;% 
-  mutate(NAsex = ifelse(is.na(Sex), NA, &quot;Not NA&quot;)) %&gt;%
-  select(NAsex, Year) %&gt;%
-  table(., useNA = &quot;ifany&quot;) %&gt;%
-  chisq.test()</code></pre>
-<pre><code>## 
-##  Pearson&#39;s Chi-squared test
-## 
-## data:  .
-## X-squared = 0.24869, df = 4, p-value = 0.9929</code></pre>
+<pre class="r"><code># YOUR CODE HERE ####</code></pre>
 <ol start="3" style="list-style-type: lower-alpha">
 <li>Impute the missing values.</li>
 </ol>
-<p><strong>We noted in part b) that a simple imputation would be appropriate. Here we create an indicator of missingness and then change all missing “Sex” values to “Female”.</strong></p>
-<pre class="r"><code>heartattack &lt;- heartattack %&gt;%
-  mutate(Sex_NAInd = ifelse(is.na(Sex), 1, 0),
-         Sex = ifelse(is.na(Sex), &quot;Female&quot;, Sex))</code></pre>
+<pre class="r"><code># YOUR CODE HERE ####</code></pre>
 </div>
 <div id="derive-a-new-variable-for-geographic-region-of-usa-to-reduce-dimensionality-of-that-field." class="section level3">
 <h3>2) Derive a new variable for “geographic region” of USA to reduce dimensionality of that field.</h3>
-<pre class="r"><code># # Tedious method
-# heartattack &lt;- heartattack %&gt;%
-#   mutate(Region = ifelse(LocationAbbr %in% c(&quot;OR&quot;, &quot;WA&quot;, &quot;CA&quot;, &quot;AK&quot;, &quot;HI&quot;),
-#                          &quot;West&quot;,
-#                          ifelse(CarpalTunnelMuch?,
-#                                 TRUE,
-#                                 TRUE)))
-
-# # Alternative method
-# With help from https://stackoverflow.com/questions/27714135/r-regex-for-coordinates
-library(stringr)
-heartattack &lt;- heartattack %&gt;%
-  mutate(latitude = as.numeric(sapply(str_extract_all(GeoLocation, &quot;-?\\d+\\.?\\d*&quot;), function(x) x[1])),
-         longitude = as.numeric(sapply(str_extract_all(GeoLocation, &quot;-?\\d+\\.?\\d*&quot;), function(x) x[2])),
-         Region = ifelse(longitude &lt; -110,
-                         &quot;West&quot;,
-                         ifelse(longitude &lt; -85 &amp; latitude &gt; 38,
-                                &quot;Midwest&quot;,
-                                ifelse(longitude &lt; -85 &amp; latitude &lt;= 38,
-                                       &quot;South&quot;,
-                                       &quot;East&quot;))))</code></pre>
+<pre class="r"><code># YOUR CODE HERE ####</code></pre>
 </div>
 <div id="partition-off-a-30-holdout-subset" class="section level3">
 <h3>3) Partition off a 30% holdout subset</h3>
-<p><strong>Using runif() function, which generates uniform random variables between 0 and 1 as a default, we can randomly select approximately 30% of all records as a holdout subset.</strong></p>
-<pre class="r"><code>set.seed(1) # Use seeds to create same random sample every time for replicability
-heartattack &lt;- heartattack %&gt;%
-  mutate(Sample = ifelse(runif(n()) &lt; 0.3,
-                         &quot;holdout&quot;,
-                         &quot;training&quot;))
-
-saveRDS(heartattack,
-        file = &quot;02_heartdiseasedataset.RDS&quot;)</code></pre>
+<pre class="r"><code># YOUR CODE HERE ####</code></pre>
 </div>
 <div id="fit-logistic-regression-to-estimate-heart-attack-odds-given-region-year-age-sex-and-race." class="section level3">
 <h3>4) Fit logistic regression to estimate heart attack odds given region, year, age, sex, and race.</h3>
-<p><strong>Using the glm() function with the binomial logit link, we fit a model to predict the odds of having a heart attack in the given year.</strong></p>
-<pre class="r"><code>logistic.model &lt;- glm(outcome ~ Region + Year + Age + Sex + Race,
-                      family = binomial(link = logit),
-                      data = heartattack %&gt;%
-                        filter(Sample == &quot;training&quot;),
-                      model = F,
-                      y = F,
-                      x = F)
-
-# Reduce object size
-logistic.model$data &lt;- NULL
-logistic.model$effects &lt;- NULL
-
-# View model coefficients and save object
-summary(logistic.model)</code></pre>
-<pre><code>## 
-## Call:
-## glm(formula = outcome ~ Region + Year + Age + Sex + Race, family = binomial(link = logit), 
-##     data = heartattack %&gt;% filter(Sample == &quot;training&quot;), model = F, 
-##     x = F, y = F)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -0.4572  -0.2676  -0.2412  -0.2266   2.8941  
-## 
-## Coefficients:
-##                Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)   -1.773673   8.525162  -0.208    0.835    
-## RegionMidwest -0.122020   0.014482  -8.426  &lt; 2e-16 ***
-## RegionSouth    0.091382   0.017939   5.094 3.50e-07 ***
-## RegionWest    -0.248850   0.018951 -13.131  &lt; 2e-16 ***
-## Year          -0.001067   0.004235  -0.252    0.801    
-## Age25-44       0.129044   0.020103   6.419 1.37e-10 ***
-## Age45-64       0.514490   0.021979  23.408  &lt; 2e-16 ***
-## Age65+         0.854206   0.033361  25.605  &lt; 2e-16 ***
-## SexMale        0.268216   0.011898  22.542  &lt; 2e-16 ***
-## RaceBlack      0.344849   0.031598  10.914  &lt; 2e-16 ***
-## RaceHispanic   0.207394   0.031945   6.492 8.45e-11 ***
-## RaceOther      0.591170   0.031106  19.005  &lt; 2e-16 ***
-## RaceWhite      0.396668   0.026070  15.215  &lt; 2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## (Dispersion parameter for binomial family taken to be 1)
-## 
-##     Null deviance: 261758  on 938189  degrees of freedom
-## Residual deviance: 259420  on 938177  degrees of freedom
-## AIC: 259446
-## 
-## Number of Fisher Scoring iterations: 6</code></pre>
-<pre class="r"><code>saveRDS(logistic.model, 
-        file = &quot;02_SampleLogisticModel.RDS&quot;,
-        compress = T)</code></pre>
+<pre class="r"><code># YOUR CODE HERE ####</code></pre>
 </div>
 <div id="test-for-multicollinearity-between-the-predictor-variables." class="section level3">
 <h3>5) Test for multicollinearity between the predictor variables.</h3>
-<p><strong>Using the vif() function on the model object, we can generate generalized variance inflation factors. Values around 1 indicate no collinearity between that variable and the others. Values greater than 1 should be noted. There is no firm threshold, but even values above 2 may change the way we parameterize our model.</strong></p>
-<p><strong>In this case, there is no cause for concern.</strong></p>
-<pre class="r"><code>vif(logistic.model)</code></pre>
-<pre><code>##            GVIF Df GVIF^(1/(2*Df))
-## Region 1.075417  3        1.012192
-## Year   1.005949  1        1.002970
-## Age    1.139502  3        1.022004
-## Sex    1.002015  1        1.001007
-## Race   1.074055  4        1.008970</code></pre>
+<pre class="r"><code># YOUR CODE HERE ####</code></pre>
 </div>
 </div>
 

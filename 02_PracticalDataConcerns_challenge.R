@@ -24,7 +24,7 @@ str(heartattack)
 # YOUR CODE HERE ####
 
 
-# b) Are the missing values correlated with any other field?
+# b) Are the missing values correlated with any other field? Consider using the table() function for cross-tabulating two categorical variables.
 
 
 # YOUR CODE HERE ####
